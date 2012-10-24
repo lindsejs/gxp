@@ -10,6 +10,7 @@
  * @requires plugins/Tool.js
  * @requires GeoExt/data/PrintProvider.js
  * @requires GeoExt/widgets/PrintMapPanel.js
+ * @requires GeoExt/widgets/LegendPanel.js
  * @requires OpenLayers/Control/ScaleLine.js
  */
 
@@ -162,10 +163,11 @@ gxp.plugins.Print = Ext.extend(gxp.plugins.Tool, {
                             printButton.initialConfig.disabled = false;
                             printButton.enable();
                         }
+                        printProvider.setLayout(printProvider.layouts.getAt(printProvider.layouts.find("name", "A4 p")));
                     },
                     print: function() {
                         try {
-                            printWindow.close();
+                            //printWindow.close();
                         } catch (err) {
                             // TODO: improve destroy
                         }
@@ -237,10 +239,7 @@ gxp.plugins.Print = Ext.extend(gxp.plugins.Tool, {
             }
 
             function isPrintable(layer) {
-                return layer.getVisibility() === true && (
-                    layer instanceof OpenLayers.Layer.WMS ||
-                    layer instanceof OpenLayers.Layer.OSM
-                );
+                return layer.getVisibility() === true && layer instanceof OpenLayers.Layer.WMS;
             }
 
             function createPrintWindow() {
@@ -263,6 +262,18 @@ gxp.plugins.Print = Ext.extend(gxp.plugins.Tool, {
                                 break;
                             }
                         }
+                    }
+                    // if still not, found create new Geoext LegendPanel
+                    if (legend === null) {
+                    	legend = new GeoExt.LegendPanel({
+							layerStore: this.target.mapPanel.layers,
+							defaults : {
+								cls : 'gxp-legend-item',
+								baseParams : {
+									LEGEND_OPTIONS : 'bgColor:0xFFFFFF;fontAntiAliasing:true;fontName:Times;fontSize:10;forceLabels:on'
+								}
+							}
+						});
                     }
                 }
                 printWindow = new Ext.Window({
@@ -288,7 +299,6 @@ gxp.plugins.Print = Ext.extend(gxp.plugins.Tool, {
                                             zoomBoxEnabled: false
                                         }),
                                         new OpenLayers.Control.PanPanel(),
-                                        new OpenLayers.Control.ZoomPanel(),
                                         new OpenLayers.Control.Attribution()
                                     ],
                                     eventListeners: {
@@ -297,12 +307,6 @@ gxp.plugins.Print = Ext.extend(gxp.plugins.Tool, {
                                         }
                                     }
                                 }, mapPanel.initialConfig.map),
-                                items: [{
-                                    xtype: "gx_zoomslider",
-                                    vertical: true,
-                                    height: 100,
-                                    aggressive: true
-                                }],
                                 listeners: {
                                     afterlayout: function(evt) {
                                         printWindow.setWidth(Math.max(360, this.getWidth() + 24));
@@ -311,7 +315,7 @@ gxp.plugins.Print = Ext.extend(gxp.plugins.Tool, {
                                 }
                             },
                             printProvider: printProvider,
-                            includeLegend: this.includeLegend,
+                            includeLegend: false,
                             legend: legend,
                             sourceMap: mapPanel
                         })
