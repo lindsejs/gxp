@@ -681,6 +681,11 @@ gxp.plugins.FeatureEditor = Ext.extend(gxp.plugins.ClickableFeatures, {
                         // deactivate will hide the layer, so show it again
                         featureManager.showLayer(this.id, this.showSelectedOnly && "selected");
                     }
+                    if(this.popupX == null || this.popupY==null){
+                        var mapPos = this.target.mapPanel.getPosition();
+                        this.popupX = mapPos[0] + this.target.mapPanel.getWidth() - this.width;
+                        this.popupY = mapPos[1] + 30;
+                    }
                     var popup = this.addOutput(Ext.apply({
                         xtype: "gxp_featureeditpopup",
                         collapsible: true,
@@ -694,8 +699,10 @@ gxp.plugins.FeatureEditor = Ext.extend(gxp.plugins.ClickableFeatures, {
                         allowDelete: true,
                         width: this.width,
                         height: this.height,
+                        x: this.popupX,
+                        y: this.popupY,
                         listeners: {
-                            "close": function() {
+                            "close": function(p) {
                                 if (this.readOnly === false) {
                                     this.selectControl.activate();
                                 }
@@ -709,6 +716,8 @@ gxp.plugins.FeatureEditor = Ext.extend(gxp.plugins.ClickableFeatures, {
                                     this.autoLoadedFeature = null;
                                     featureStore.removed = [];
                                 }
+                                this.width = p.getWidth();
+                                this.height = p.getHeight();
                             },
                             "featuremodified": function(popup, feature) {
                                 popup.disable();
@@ -788,6 +797,10 @@ gxp.plugins.FeatureEditor = Ext.extend(gxp.plugins.ClickableFeatures, {
                             },
                             "canceledit": function(popup, feature) {
                                 featureStore.commitChanges();
+                            },
+                            "move": function(p, x, y ) {
+                                this.popupX = x;
+                                this.popupY = y;
                             },
                             scope: this
                         }
