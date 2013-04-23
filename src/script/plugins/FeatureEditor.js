@@ -257,6 +257,7 @@ gxp.plugins.FeatureEditor = Ext.extend(gxp.plugins.ClickableFeatures, {
     /** api: method[addActions]
      */
     addActions: function() {
+        this.drawMultiple=true;
         var featureManager = this.getFeatureManager();
         var featureLayer = featureManager.featureLayer;
         
@@ -325,7 +326,10 @@ gxp.plugins.FeatureEditor = Ext.extend(gxp.plugins.ClickableFeatures, {
                         );
                     },
                     deactivate: function() {
-                        featureManager.hideLayer(this.id);
+                        //hide layer only if not modifying
+                        if(!(this.popup && this.popup.modifyControl && this.popup.modifyControl.active === true)){
+                            featureManager.hideLayer(this.id);
+                        }
                     },
                     scope: this
                 }
@@ -428,12 +432,23 @@ gxp.plugins.FeatureEditor = Ext.extend(gxp.plugins.ClickableFeatures, {
                 // the feature row is added to a FeatureGrid. This, again,
                 // would result in the new feature not being shown as selected
                 // in the grid.
-                featureManager.featureLayer.events.register("featuresadded", this, function(evt) {
-                    featureManager.featureLayer.events.unregister("featuresadded", this, arguments.callee);
+                
+                //if modifyControl is active add created geometry to selected feature
+                if(this.popup && this.popup.modifyControl && this.popup.modifyControl.active === true){
+                    this.popup.feature.geometry.addComponents(evt.feature.geometry.components);
+                    this.popup.modifyControl.resetVertices();
+                    this.popup.feature.layer.redraw();
                     this.drawControl.deactivate();
-                    this.selectControl.activate();
-                    this.selectControl.select(evt.features[0]);
-                });
+                    return false;
+                } else {
+                    featureManager.featureLayer.events.register("featuresadded", this, function(evt) {
+	                    featureManager.featureLayer.events.unregister("featuresadded", this, arguments.callee);
+	                    this.drawControl.deactivate();
+	                    this.selectControl.activate();
+	                    this.selectControl.select(evt.features[0]);
+                    });
+                }
+
             },
             scope: this
         });
