@@ -126,7 +126,7 @@ gxp.grid.FeatureGrid = Ext.extend(Ext.grid.GridPanel, {
                 this.map.addLayer(this.layer);
             }
         } else {
-            this.store = new Ext.data.Store();
+            this.store = new Ext.data.GroupingStore();
             this.cm = new Ext.grid.ColumnModel({
                 columns: []
             });
