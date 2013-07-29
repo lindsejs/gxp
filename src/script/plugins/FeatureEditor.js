@@ -701,7 +701,8 @@ gxp.plugins.FeatureEditor = Ext.extend(gxp.plugins.ClickableFeatures, {
                         this.popupX = mapPos[0] + this.target.mapPanel.getWidth() - this.width;
                         this.popupY = mapPos[1] + 30;
                     }
-                    var popup = this.addOutput(Ext.apply({
+                    
+                    var popupCfg = {
                         xtype: "gxp_featureeditpopup",
                         collapsible: true,
                         feature: featureStore.getByFeature(feature),
@@ -723,6 +724,10 @@ gxp.plugins.FeatureEditor = Ext.extend(gxp.plugins.ClickableFeatures, {
                                 }
                                 if(feature.layer && feature.layer.selectedFeatures.indexOf(feature) !== -1) {
                                     this.selectControl.unselect(feature);
+                                }else{
+                                    if (feature) {
+					                    this.fireEvent("featureeditable", this, feature, false);
+					                }
                                 }
                                 if (feature === this.autoLoadedFeature) {
                                     if (feature.layer) {
@@ -819,7 +824,15 @@ gxp.plugins.FeatureEditor = Ext.extend(gxp.plugins.ClickableFeatures, {
                             },
                             scope: this
                         }
-                    },  this.popupConfig ? this.popupConfig:{}));
+                    };
+                    
+                    Ext.apply(popupCfg, this.popupConfig ? this.popupConfig:{});
+                    if(this.popupConfig && this.popupConfig.tools){
+                        popupCfg.tools = [].concat(this.popupConfig.tools);
+                    }
+                    
+                    var popup = this.addOutput(popupCfg);
+                    
                     this.popup = popup;
                 }
     }
