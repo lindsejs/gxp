@@ -141,15 +141,17 @@ gxp.plugins.LayerTree = Ext.extend(gxp.plugins.Tool, {
         var defaultGroup = this.defaultGroup,
             plugin = this,
             groupConfig,
-            exclusive;
+            exclusive,
+            expanded;
         for (var group in this.groups) {
             groupConfig = typeof this.groups[group] == "string" ?
                 {title: this.groups[group]} : this.groups[group];
             exclusive = groupConfig.exclusive;
+            expanded = groupConfig.expanded;
             treeRoot.appendChild(new GeoExt.tree.LayerContainer(Ext.apply({
                 text: groupConfig.title,
                 iconCls: "gxp-folder",
-                expanded: true,
+                expanded: expanded!==false,
                 group: group == this.defaultGroup ? undefined : group,
                 loader: new GeoExt.tree.LayerLoader({
                     baseAttrs: exclusive ?
