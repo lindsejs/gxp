@@ -191,7 +191,7 @@ gxp.plugins.FeatureGrid = Ext.extend(gxp.plugins.ClickableFeatures, {
             border: false,
             sm: new GeoExt.grid.FeatureSelectionModel(smCfg),
             autoScroll: true,
-            columnMenuDisabled: !!featureManager.paging,
+            //columnMenuDisabled: !!featureManager.paging,
             bbar: (featureManager.paging ? [{
                 iconCls: "x-tbar-page-first",
                 ref: "../firstPageButton",
@@ -237,7 +237,7 @@ gxp.plugins.FeatureGrid = Ext.extend(gxp.plugins.ClickableFeatures, {
                 handler: function() {
                     featureManager.setPage({index: "last"});
                 }
-            }, {xtype: 'tbspacer', width: 10}, this.displayItem] : []).concat(["->"].concat(!this.alwaysDisplayOnMap ? [{
+            }, {xtype: 'tbspacer', width: 10}, this.displayItem] : []).concat(!this.alwaysDisplayOnMap ? [{
                 text: this.displayFeatureText,
                 enableToggle: true,
                 toggleHandler: function(btn, pressed) {
@@ -245,7 +245,7 @@ gxp.plugins.FeatureGrid = Ext.extend(gxp.plugins.ClickableFeatures, {
                     featureManager[pressed ? "showLayer" : "hideLayer"](this.id, this.displayMode);
                 },
                 scope: this
-            }] : [])),
+            }] : []),
             listeners: {
                 "added": function(cmp, ownerCt) {
                     function onClear() {
