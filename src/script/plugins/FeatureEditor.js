@@ -444,6 +444,7 @@ gxp.plugins.FeatureEditor = Ext.extend(gxp.plugins.ClickableFeatures, {
                     featureManager.featureLayer.events.register("featuresadded", this, function(evt) {
 	                    featureManager.featureLayer.events.unregister("featuresadded", this, arguments.callee);
 	                    this.drawControl.deactivate();
+	                    this.removeFirstClick = true;
 	                    this.selectControl.activate();
 	                    this.selectControl.select(evt.features[0]);
                     });

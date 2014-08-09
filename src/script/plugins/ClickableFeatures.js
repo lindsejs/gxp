@@ -104,6 +104,10 @@ gxp.plugins.ClickableFeatures = Ext.extend(gxp.plugins.Tool, {
      *  :arg evt: ``Object``
      */
     noFeatureClick: function(evt) {
+    	if(this.removeFirstClick === true){
+    		this.removeFirstClick = false;
+    		return;
+    	}
         if (!this.selectControl) {
             this.selectControl = new OpenLayers.Control.SelectFeature(
                 this.target.tools[this.featureManager].featureLayer,
