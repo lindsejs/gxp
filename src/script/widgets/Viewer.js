@@ -442,7 +442,7 @@ gxp.Viewer = Ext.extend(Ext.util.Observable, {
                 theme: mapConfig.theme || null,
                 controls: mapConfig.controls || [
                     new OpenLayers.Control.Navigation({
-                        zoomWheelOptions: {interval: 250},
+                        mouseWheelOptions: {interval: 250},
                         dragPanOptions: {enableKinetic: true}
                     }),
                     new OpenLayers.Control.PanPanel(),
