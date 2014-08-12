@@ -162,6 +162,8 @@ gxp.plugins.ClickableFeatures = Ext.extend(gxp.plugins.Tool, {
             params.SRS = projection.getCode();
         }
         
+        this.setMapCursor("wait");
+        
         var store = new GeoExt.data.FeatureStore({
             fields: {},
             proxy: new GeoExt.data.ProtocolProxy({
@@ -208,6 +210,13 @@ gxp.plugins.ClickableFeatures = Ext.extend(gxp.plugins.Tool, {
                             autoLoad();
                         }
                     }
+                    this.setMapCursor("auto");
+                },
+                "exception": function() {
+                	this.setMapCursor("auto");
+                },
+                "loadexception": function() {
+                	this.setMapCursor("auto");
                 },
                 scope: this
             }
@@ -224,6 +233,13 @@ gxp.plugins.ClickableFeatures = Ext.extend(gxp.plugins.Tool, {
     select: function(feature) {
         this.selectControl.unselectAll();
         this.selectControl.select(feature);
+    },
+    
+    setMapCursor: function(cursor){
+		  var maps = document.getElementsByClassName('olMapViewport');
+		  for(var i=0; i<maps.length; i++) {
+		    maps[i].style.cursor = cursor;
+		  }
     }
     
 });
