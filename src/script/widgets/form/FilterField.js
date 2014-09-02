@@ -291,7 +291,12 @@ gxp.form.FilterField = Ext.extend(Ext.form.CompositeField, {
     
     setFilterType: function(type) {
         this.filter.type = type;
-        if (type === OpenLayers.Filter.Comparison.BETWEEN) {
+        if(type === OpenLayers.Filter.Comparison.IS_NULL){
+        	this.filter.value = 0;
+        	this.items.get(2).hide();
+            this.items.get(3).hide();
+            this.items.get(4).hide();
+        } else if (type === OpenLayers.Filter.Comparison.BETWEEN) {
             this.items.get(2).hide();
             this.items.get(3).show();
             this.items.get(4).show();
@@ -331,7 +336,8 @@ gxp.form.FilterField = Ext.extend(Ext.form.CompositeField, {
     getAllowedTypesByXtype: function(xtype){
         var allowedTypes = [
             [OpenLayers.Filter.Comparison.EQUAL_TO, "="],
-            [OpenLayers.Filter.Comparison.NOT_EQUAL_TO, "<>"]
+            [OpenLayers.Filter.Comparison.NOT_EQUAL_TO, "<>"],
+            [OpenLayers.Filter.Comparison.IS_NULL, "NULL"]
         ];
         if(xtype=='textfield'){
             allowedTypes.push([OpenLayers.Filter.Comparison.LIKE, gxp.form.ComparisonComboBox.prototype.likeFilterText]); 
