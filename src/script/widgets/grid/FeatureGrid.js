@@ -185,7 +185,7 @@ gxp.grid.FeatureGrid = Ext.extend(Ext.grid.GridPanel, {
             this.reconfigure(store, this.createColumnModel(store));
         } else {
             this.reconfigure(
-                new Ext.data.Store(),
+                new Ext.data.GroupingStore(),
                 new Ext.grid.ColumnModel({columns: []}));
         }
     },
