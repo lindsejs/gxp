@@ -91,6 +91,11 @@ gxp.plugins.LayerTree = Ext.extend(gxp.plugins.Tool, {
      */
     treeNodeUI: null,
     
+    /** private: config[nodeTooltip]
+     *  ``String`` tooltip for layer node.
+     */
+    nodeTooltip: null,
+    
     /** private: method[constructor]
      *  :arg config: ``Object``
      */
@@ -216,7 +221,7 @@ gxp.plugins.LayerTree = Ext.extend(gxp.plugins.Tool, {
                 return r.getLayer() === layer;
             }));
             if (record) {
-                attr.qtip = record.get('abstract');
+                attr.qtip = this.nodeTooltip ? this.nodeTooltip : record.get('abstract');
                 if (!record.get("queryable") && !attr.iconCls) {
                     attr.iconCls = "gxp-tree-rasterlayer-icon";
                 }
