@@ -35,6 +35,11 @@ gxp.form.ComparisonComboBox = Ext.extend(Ext.form.ComboBox, {
      */
     likeFilterText: "like",
     
+    /** api:config[nullFilterText]
+     *  ``String`` text for "null" value (i18n)
+     */
+    nullFilterText: "not filled",
+    
     allowedTypes: [
         [OpenLayers.Filter.Comparison.EQUAL_TO, "="],
         [OpenLayers.Filter.Comparison.NOT_EQUAL_TO, "<>"],
@@ -43,7 +48,8 @@ gxp.form.ComparisonComboBox = Ext.extend(Ext.form.ComboBox, {
         [OpenLayers.Filter.Comparison.LESS_THAN_OR_EQUAL_TO, "<="],
         [OpenLayers.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO, ">="],
         [OpenLayers.Filter.Comparison.LIKE, this.likeFilterText],
-        [OpenLayers.Filter.Comparison.BETWEEN, this.betweenFilterText]
+        [OpenLayers.Filter.Comparison.BETWEEN, this.betweenFilterText],
+        [OpenLayers.Filter.Comparison.IS_NULL, this.nullFilterText]
     ],
 
     allowBlank: false,

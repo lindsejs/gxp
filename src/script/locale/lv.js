@@ -423,7 +423,8 @@ GeoExt.Lang.add("lv", {
     
     "gxp.form.ComparisonComboBox.prototype": { 
         betweenFilterText: "starp",
-        likeFilterText: "līdzīgs"
+        likeFilterText: "līdzīgs",
+        nullFilterText: "neaizpildīts"
     }
 
 });

@@ -337,7 +337,7 @@ gxp.form.FilterField = Ext.extend(Ext.form.CompositeField, {
         var allowedTypes = [
             [OpenLayers.Filter.Comparison.EQUAL_TO, "="],
             [OpenLayers.Filter.Comparison.NOT_EQUAL_TO, "<>"],
-            [OpenLayers.Filter.Comparison.IS_NULL, "NULL"]
+            [OpenLayers.Filter.Comparison.IS_NULL, gxp.form.ComparisonComboBox.prototype.nullFilterText]
         ];
         if(xtype=='textfield'){
             allowedTypes.push([OpenLayers.Filter.Comparison.LIKE, gxp.form.ComparisonComboBox.prototype.likeFilterText]); 
